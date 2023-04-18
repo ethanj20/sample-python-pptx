@@ -6,6 +6,8 @@ current_directory = os.getcwd()
 replacement_animals = os.listdir(current_directory + '/replacement_images')
 prs = pptx.Presentation('original.pptx')
 
+image_to_replace = pptx.parts.image.Image.from_file('lion.png')
+
 # Find the slide you want to modify
 slide = prs.slides[0]
 
@@ -40,7 +42,7 @@ for shape in slide.shapes:
             # old_pic.addnext(new_pic)
             # old_pic.getparent().remove(old_pic)
 
-            # print(f'replacement_imagesdes/{replacement_animalsdes[replacement_counter]}')
+            print(f'replacement_images/{replacement_animals[replacement_counter]}')
             new_pptx_img = pptx.parts.image.Image.from_file(f'replacement_images/{replacement_animals[replacement_counter]}')
 
             # shape._element.blip_rId = 'rId' + str(replacement_counter + 300)
@@ -50,7 +52,10 @@ for shape in slide.shapes:
             print('rID', shape._element.blip_rId)
             image_part = slide_part.related_part(rId)
 
-            image_part.blob = new_pptx_img._blob
+            if image_to_replace.blob == image_part.blob:
+                image_part.blob = new_pptx_img._blob
+
+            # image_part.blob = new_pptx_img._blob
 
             replacement_counter += 1
 
